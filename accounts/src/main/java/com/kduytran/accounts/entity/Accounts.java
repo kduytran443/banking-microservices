@@ -25,4 +25,6 @@ public class Accounts extends BaseEntity {
     @Column
     private String mobileNumber;
 
+    @Column
+    private String branchAddress;
 }
