@@ -1,7 +1,7 @@
 package com.kduytran.accounts.constants;
 
-public class AccountConstants {
-    private AccountConstants () {
+public class AccountsConstants {
+    private AccountsConstants() {
         //Cannot create instance of this class
     }
     public static final String SAVINGS = "Savings";

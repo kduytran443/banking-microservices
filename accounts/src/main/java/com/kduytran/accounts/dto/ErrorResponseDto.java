@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data @AllArgsConstructor
 public class ErrorResponseDto {
     private String path;
-    private String message;
     private HttpStatus errorCode;
+    private String message;
     private LocalDateTime errorTime;
 }
