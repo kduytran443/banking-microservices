@@ -75,6 +75,10 @@ public class AccountsController {
                     description = "HTTP Status OK"
             ),
             @ApiResponse(
+                    responseCode = AccountsConstants.STATUS_417,
+                    description = "Expectation Failed"
+            ),
+            @ApiResponse(
                     responseCode = AccountsConstants.STATUS_500,
                     description = "HTTP Status INTERNAL SERVER ERROR",
                     content = @Content(
@@ -92,7 +96,7 @@ public class AccountsController {
         } else {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDto(AccountsConstants.STATUS_500, AccountsConstants.MESSAGE_500));
+                    .body(new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_UPDATE));
         }
     }
 
@@ -104,6 +108,10 @@ public class AccountsController {
             @ApiResponse(
                     responseCode = AccountsConstants.STATUS_200,
                     description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = AccountsConstants.STATUS_417,
+                    description = "Expectation Failed"
             ),
             @ApiResponse(
                     responseCode = AccountsConstants.STATUS_500,
@@ -122,7 +130,7 @@ public class AccountsController {
         } else {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDto(AccountsConstants.STATUS_500, AccountsConstants.MESSAGE_500));
+                    .body(new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_DELETE));
         }
     }
 
