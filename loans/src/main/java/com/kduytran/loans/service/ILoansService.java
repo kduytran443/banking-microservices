@@ -5,9 +5,9 @@ import com.kduytran.loans.dto.LoansDto;
 public interface ILoansService {
 
     /**
-     * @param loansDto - LoansDto object
+     * @param mobileNumber - Mobile Number of the Customer
      */
-    void createLoan(LoansDto loansDto);
+    void createLoan(String mobileNumber);
 
     /**
      * @param mobileNumber - Input Mobile Number
