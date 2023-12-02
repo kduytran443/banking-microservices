@@ -1,9 +1,6 @@
 package com.kduytran.loans.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class Loans extends BaseEntity {
 
     @Id
-    @GeneratedValue(generator = "native")
+    @GeneratedValue(generator = "native", strategy = GenerationType.AUTO)
     @GenericGenerator(strategy = "native", name = "native")
     private Long loanId;
 
