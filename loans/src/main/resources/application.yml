@@ -14,4 +14,13 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: truebuild:
+  version: "3.0"
+
+loans:
+  message: "Welcome to loans microservice related local APIs"
+  contactDetails:
+    name: "Tran Khanh Duy - Developer"
+    email: "trankhanhduy18@gmail.com"
+  onCallSupport:
+    - 0xxxxxxxxx
