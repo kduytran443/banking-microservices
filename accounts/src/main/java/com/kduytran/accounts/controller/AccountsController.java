@@ -1,6 +1,7 @@
 package com.kduytran.accounts.controller;
 
 import com.kduytran.accounts.constants.AccountsConstants;
+import com.kduytran.accounts.dto.AccountsContactInfoDto;
 import com.kduytran.accounts.dto.CustomerDto;
 import com.kduytran.accounts.dto.ErrorResponseDto;
 import com.kduytran.accounts.dto.ResponseDto;
@@ -16,6 +17,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
 @Validated
 @Tag(
         name = "CRUD REST APIs for Accounts in bank"
@@ -32,6 +35,19 @@ import org.springframework.web.bind.annotation.*;
 public class AccountsController {
 
     private final IAccountsService iAccountsService;
+
+    @Value("${build.version}")
+    private String buildVersion;
+
+    private final Environment environment;
+    private final AccountsContactInfoDto accountsContactInfoDto;
+
+    @Autowired
+    public AccountsController(final IAccountsService iAccountsService, final Environment environment, final AccountsContactInfoDto accountsContactInfoDto) {
+        this.iAccountsService = iAccountsService;
+        this.environment = environment;
+        this.accountsContactInfoDto = accountsContactInfoDto;
+    }
 
     @Operation(
             summary = "Create Account REST API",
@@ -115,7 +131,10 @@ public class AccountsController {
             ),
             @ApiResponse(
                     responseCode = AccountsConstants.STATUS_500,
-                    description = "HTTP Status INTERNAL SERVER ERROR"
+                    description = "HTTP Status INTERNAL SERVER ERROR",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
             )
     })
     @DeleteMapping("/delete")
@@ -132,6 +151,72 @@ public class AccountsController {
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_DELETE));
         }
+    }
+
+    @Operation(
+            summary = "Get build information",
+            description = "REST API to get build info of Accounts microservices"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status INTERNAL SERVER ERROR",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    })
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getBuildInfo() {
+        return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+    }
+
+    @Operation(
+            summary = "Get Java version",
+            description = "REST API to get Java version of Accounts microservices"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status INTERNAL SERVER ERROR",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    })
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion() {
+        return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
+    }
+
+    @Operation(
+            summary = "Get contact info",
+            description = "REST API to get contract info of Accounts microservice"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status INTERNAL SERVER ERROR",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    })
+    @GetMapping("/contact-info")
+    public ResponseEntity<AccountsContactInfoDto> getContactInfo() {
+        return ResponseEntity.status(HttpStatus.OK).body(accountsContactInfoDto);
     }
 
 }
