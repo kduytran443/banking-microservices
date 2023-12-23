@@ -15,18 +15,9 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  application:
+    name: "cards"
   config:
-    import:
-      - "application_prod.yml"
-      - "application_qa.yml"
-
-build:
-  version: "3.0"
-
-cards:
-  message: "Welcome to cards microservice related local APIs"
-  contactDetails:
-    name: "Tran Khanh Duy - Developer"
-    email: "trankhanhduy18@gmail.com"
-  onCallSupport:
-    - 0xxxxxxxxx
+    import: "optional:configserver:http://localhost:8071/"
+  profiles:
+    active: "prod"
