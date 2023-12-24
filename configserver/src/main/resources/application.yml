@@ -7,8 +7,17 @@ spring:
   cloud:
     config:
       server:
-        native:
-          search-locations: "classpath:/config"
+#        native:
+#          search-locations: "classpath:/config"
+        git:
+          uri: "https://github.com/kduytran443/banking-microservices-config.git"
+          default-label: main #branch
+          timeout: 5 #maximum waiting seconds
+          clone-on-start: true #clone GITHUB repo into local system during startup
+          force-pull: true
+
+encrypt:
+  key: "018c9cd8-0541-70fd-bc77-9f396c0c1bb0"
 
 server:
   port: 8071
