@@ -1,3 +1,7 @@
+spring:
+  application:
+    name: "loans"
+
 build:
   version: "1.0"
 

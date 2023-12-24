@@ -15,10 +15,12 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  application:
+    name: "loans"
   config:
-    import:
-      - "application_prod.yml"
-      - "application_qa.yml"
+    import: "optional:configserver:http://localhost:8071/"
+  profiles:
+    active: "prod"
 
 build:
   version: "3.0"
