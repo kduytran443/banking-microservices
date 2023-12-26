@@ -21,3 +21,9 @@ spring:
     import: "optional:configserver:http://localhost:8071/"
   profiles:
     active: "prod"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
