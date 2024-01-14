@@ -90,7 +90,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<image>
-						<name>khanhduytran/${project.artifactId}:s4</name>
+						<name>khanhduytran/${project.artifactId}:s6</name>
 					</image>
 					<excludes>
 						<exclude>
@@ -98,6 +98,16 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.0</version>
+				<configuration>
+					<to>
+						<image>khanhduytran/${project.artifactId}:s6</image>
+					</to>
 				</configuration>
 			</plugin>
 		</plugins>
