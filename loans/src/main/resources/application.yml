@@ -34,4 +34,25 @@ management:
   endpoints:
     web:
       exposure:
-        include: "refresh"
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+  info:
+    env:
+      enabled: true
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: "http://localhost:8070/eureka/"
+
+info:
+  app:
+    name: "loans"
+    description: "Bank Loans Application"
+    version: "1.0.0"
