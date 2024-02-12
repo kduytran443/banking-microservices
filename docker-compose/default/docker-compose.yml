@@ -15,7 +15,7 @@ services:
       file: common-config.yml
       service: network-deploy-service
   configserver:
-    image: "khanhduytran/configserver:s6"
+    image: "khanhduytran/configserver:s8"
     container_name: configserver-ms
     ports:
       - "8071:8071"
@@ -31,8 +31,24 @@ services:
     extends:
       file: common-config.yml
       service: microservice-base-config
+  eurekaserver:
+    image: "khanhduytran/eurekaserver:s8"
+    container_name: eurekaserver-ms
+    ports:
+      - "8070:8070"
+    healthcheck:
+      test: "curl --fail --silent localhost:8070/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    environment:
+      SPRING_APPILICATION_NAME: "eurekaserver"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
   accounts:
-    image: "khanhduytran/accounts:s6"
+    image: "khanhduytran/accounts:s8"
     container_name: accounts-ms
     ports:
       - "8080:8080"
@@ -40,9 +56,9 @@ services:
       SPRING_APPLICATION_NAME: "accounts"
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eureka-config
   loans:
-    image: "khanhduytran/loans:s6"
+    image: "khanhduytran/loans:s8"
     container_name: loans-ms
     ports:
       - "8090:8090"
@@ -50,9 +66,9 @@ services:
       SPRING_APPLICATION_NAME: "loans"
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eureka-config
   cards:
-    image: "khanhduytran/cards:s6"
+    image: "khanhduytran/cards:s8"
     container_name: cards-ms
     ports:
       - "9000:9000"
@@ -60,7 +76,7 @@ services:
       SPRING_APPLICATION_NAME: "cards"
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eureka-config
 networks:
   khanhduytran:
     driver: "bridge"
