@@ -13,7 +13,7 @@ public class FilterUtility {
 
     public String getCorrelationId(HttpHeaders requestHeaders) {
         List<String> requestHeaderList = requestHeaders.get(CORRELATION_ID_KEY);
-        if (requestHeaderList.size() > 0) {
+        if (requestHeaderList != null && requestHeaderList.size() > 0) {
             return requestHeaderList.get(0);
         } else {
             return null;

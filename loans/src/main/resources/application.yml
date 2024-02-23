@@ -56,3 +56,10 @@ info:
     name: "loans"
     description: "Bank Loans Application"
     version: "1.0.0"
+
+
+logging:
+  level:
+    com:
+      kduytran:
+        loans: debug

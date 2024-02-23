@@ -20,8 +20,8 @@ public class ResponseTraceFilter {
     @Bean
     public GlobalFilter postGlobalFilter() {
         return (exchange, chain) -> chain.filter(exchange).then(Mono.fromRunnable(() -> {
-            HttpHeaders httpHeaders = exchange.getResponse().getHeaders();
-            String correlationId = filterUtility.getCorrelationId(httpHeaders);
+            HttpHeaders requestHeaders = exchange.getRequest().getHeaders();
+            String correlationId = filterUtility.getCorrelationId(requestHeaders);
             logger.debug("Updated the correlation id to the outbound headers: {}", correlationId);
             exchange.getResponse().getHeaders().add(filterUtility.CORRELATION_ID_KEY, correlationId);
         }));
