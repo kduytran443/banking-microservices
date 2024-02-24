@@ -15,11 +15,6 @@ spring:
           timeout: 5 #maximum waiting seconds
           clone-on-start: true #clone GITHUB repo into local system during startup
           force-pull: true
-  rabbitmq:
-    host: "localhost"
-    port: 5672
-    username: "guest"
-    password: "guest"
 
 encrypt:
   key: "018c9cd8-0541-70fd-bc77-9f396c0c1bb0"

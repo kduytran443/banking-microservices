@@ -21,20 +21,23 @@ spring:
     import: "optional:configserver:http://localhost:8071/"
   profiles:
     active: "prod"
-  rabbitmq:
-    host: "localhost"
-    port: 5672
-    username: "guest"
-    password: "guest"
 
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
   endpoint:
     shutdown:
       enabled: true
+    health:
+      probes:
+        enabled: true
   info:
     env:
       enabled: true
@@ -58,4 +61,4 @@ logging:
   level:
     com:
       kduytran:
-        cards: debug
+        cards: DEBUG
