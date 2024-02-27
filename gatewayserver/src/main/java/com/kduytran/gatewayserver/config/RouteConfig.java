@@ -19,6 +19,9 @@ public class RouteConfig {
                         .filters(f -> f
                                 .rewritePath(PathUtils.getPathWithContextPath("accounts/(?<segment>.*)"), "/${segment}")
                                 .addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
+                                .circuitBreaker(config -> config.setName("accountsCircuitBreaker")
+                                        .setFallbackUri("forward:/contactSupport")
+                                )
                         )
                         .uri("lb://ACCOUNTS"))
                 .route(p -> p

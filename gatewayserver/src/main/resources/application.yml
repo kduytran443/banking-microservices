@@ -33,3 +33,12 @@ logging:
     com:
       kduytran:
         gatewayserver: DEBUG
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 10 #Number of requests that Gateway should monitor in CLOSE_STATE
+        permitted-number-of-calls-in-half-open-state: 2 #Number of requests that Gateway should monitor in HALF_OPEN_STATE
+        failure-rate-threshold: 50 #If at least 50% of requests are failed, it will change the STATE
+        wait-duration-in-open-state: 10000 #Need to wait for 10000ms to OPEN_STATE -> HALF_OPEN_STATE
