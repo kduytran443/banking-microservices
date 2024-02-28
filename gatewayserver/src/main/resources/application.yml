@@ -5,6 +5,9 @@ spring:
     import: "optional:configserver:http://localhost:8071/"
   cloud:
     gateway:
+      httpclient:
+        connect-timeout: 1000
+        response-timeout: 2s
       discovery:
         locator:
           enabled: false
