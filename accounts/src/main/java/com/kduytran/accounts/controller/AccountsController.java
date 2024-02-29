@@ -6,6 +6,7 @@ import com.kduytran.accounts.dto.CustomerDto;
 import com.kduytran.accounts.dto.ErrorResponseDto;
 import com.kduytran.accounts.dto.ResponseDto;
 import com.kduytran.accounts.service.IAccountsService;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,6 +18,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -41,6 +44,7 @@ public class AccountsController {
 
     private final Environment environment;
     private final AccountsContactInfoDto accountsContactInfoDto;
+    private static final Logger logger = LoggerFactory.getLogger(AccountsController.class);
 
     @Autowired
     public AccountsController(final IAccountsService iAccountsService, final Environment environment, final AccountsContactInfoDto accountsContactInfoDto) {
@@ -170,9 +174,18 @@ public class AccountsController {
                     )
             )
     })
+    @Retry(name = "getBuildInfo", fallbackMethod = "getBuildInfoFallBack")
     @GetMapping("/build-info")
     public ResponseEntity<String> getBuildInfo() {
-        return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+        logger.debug("getBuildInfo() method is invoked");
+        throw new NullPointerException();
+        // return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+    }
+
+    public ResponseEntity<String> getBuildInfoFallBack(Throwable throwable) {
+        logger.debug("getBuildInfoFallBack() method is invoked");
+        final String DEFAULT_BUILD_INFO = "1.0";
+        return ResponseEntity.status(HttpStatus.OK).body(DEFAULT_BUILD_INFO);
     }
 
     @Operation(
