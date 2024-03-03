@@ -83,3 +83,9 @@ resilience4j:
         wait-duration: 100
         enable-exponential-backoff: true
         exponential-backoff-multiplier: 2
+  ratelimiter:
+    configs:
+      default:
+        timeout-duration: 1000
+        limit-refresh-period: 5000
+        limit-for-period: 1
