@@ -30,7 +30,7 @@ public class RouteConfig {
                                         .setFallbackUri("forward:/contactSupport")
                                 )
                                 .retry(retryConfig -> retryConfig
-                                        .setRetries(3)
+                                        .setRetries(2)
                                         .setMethods(HttpMethod.GET)
                                         .setBackoff(Duration.ofMillis(100), Duration.ofMillis(1000), 2, true))
                         )
