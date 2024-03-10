@@ -79,7 +79,7 @@
 				<version>3.3.2</version>
 				<configuration>
 					<to>
-						<image>khanhduytran/${project.artifactId}:s9</image>
+						<image>khanhduytran/${project.artifactId}:s10</image>
 					</to>
 				</configuration>
 			</plugin>
