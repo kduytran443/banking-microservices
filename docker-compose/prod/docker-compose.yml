@@ -1,27 +1,20 @@
 services:
-  rabbit:
-    image: rabbitmq:3.12-management
-    hostname: rabbitmq
+  redis:
+    image: redis
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "6379:6379"
     healthcheck:
-      test: rabbitmq-diagnostics check_port_connectivity
-      interval: 10s
-      timeout: 5s
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      timeout: 10s
       retries: 10
-      start_period: 5s
     extends:
       file: common-config.yml
       service: network-deploy-service
   configserver:
-    image: "khanhduytran/configserver:s8"
+    image: "khanhduytran/configserver:s10"
     container_name: configserver-ms
     ports:
       - "8071:8071"
-    depends_on:
-      rabbit:
-        condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
       interval: 10s
@@ -32,7 +25,7 @@ services:
       file: common-config.yml
       service: microservice-base-config
   eurekaserver:
-    image: "khanhduytran/eurekaserver:s8"
+    image: "khanhduytran/eurekaserver:s10"
     container_name: eurekaserver-ms
     ports:
       - "8070:8070"
@@ -48,32 +41,73 @@ services:
       file: common-config.yml
       service: microservice-configserver-config
   accounts:
-    image: "khanhduytran/accounts:s8"
+    image: "khanhduytran/accounts:s10"
     container_name: accounts-ms
     ports:
       - "8080:8080"
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     environment:
       SPRING_APPLICATION_NAME: "accounts"
     extends:
       file: common-config.yml
       service: microservice-eureka-config
   loans:
-    image: "khanhduytran/loans:s8"
+    image: "khanhduytran/loans:s10"
     container_name: loans-ms
     ports:
       - "8090:8090"
+    healthcheck:
+      test: "curl --fail --silent localhost:8090/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     environment:
       SPRING_APPLICATION_NAME: "loans"
     extends:
       file: common-config.yml
       service: microservice-eureka-config
   cards:
-    image: "khanhduytran/cards:s8"
+    image: "khanhduytran/cards:s10"
     container_name: cards-ms
     ports:
       - "9000:9000"
+    healthcheck:
+      test: "curl --fail --silent localhost:9000/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     environment:
       SPRING_APPLICATION_NAME: "cards"
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+  gatewayserver:
+    image: "khanhduytran/gatewayserver:s10"
+    container_name: gatewayserver-ms
+    ports:
+      - "8072:8072"
+    depends_on:
+      accounts:
+        condition: service_healthy
+      loans:
+        condition: service_healthy
+      cards:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "gatewayserver"
+      SPRING_DATA_REDIS_CONNECT-TIMEOUT: 2s
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_TIMEOUT: 1s
     extends:
       file: common-config.yml
       service: microservice-eureka-config
