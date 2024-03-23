@@ -1,6 +1,4 @@
 services:
-    ports:
-    healthcheck:
   configserver:
     image: "khanhduytran/configserver:s10"
     container_name: configserver-ms
@@ -91,14 +89,8 @@ services:
         condition: service_healthy
       cards:
         condition: service_healthy
-      redis:
-        condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "gatewayserver"
-      SPRING_DATA_REDIS_CONNECT-TIMEOUT: 2s
-      SPRING_DATA_REDIS_HOST: redis
-      SPRING_DATA_REDIS_PORT: 6379
-      SPRING_DATA_REDIS_TIMEOUT: 1s
     extends:
       file: common-config.yml
       service: microservice-eureka-config
